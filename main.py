@@ -110,12 +110,14 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
     # TODO: Implement function
     for epoch in range(epochs):
       batch_no = 0
+      total_loss = 0.0
       for images, labels in get_batches_fn(batch_size):
         _,loss = sess.run([train_op,cross_entropy_loss], feed_dict = {input_image:images, correct_label : labels, 
-                                        keep_prob : 0.60, learning_rate : 0.00005})
+                                        keep_prob : 0.50, learning_rate : 0.0001})
         batch_no += 1
-        print('Epoch{:>2},step: {}, loss: {}  '.format(epoch + 1, batch_no, loss))
-        print()
+        total_loss += loss
+      print('Epoch{:>2}, avg_loss: {}  '.format(epoch + 1,  total_loss/batch_no))
+      print()
                                     
      
 tests.test_train_nn(train_nn)
@@ -130,7 +132,7 @@ def run():
 
 
     epochs = 10
-    batch_size = 5
+    batch_size = 20
 
     # Download pretrained vgg model
     helper.maybe_download_pretrained_vgg(data_dir)
